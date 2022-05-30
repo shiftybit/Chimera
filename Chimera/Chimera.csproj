@@ -24,6 +24,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe</StartProgram>
+    <StartArguments>-NoExit .\PowerShellTest.ps1</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +37,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe</StartProgram>
+    <StartArguments>-NoExit .\PowerShellTest.ps1</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -87,26 +93,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InvokeInternalPython.cs" />
+    <Compile Include="ExampleCmdlet.cs" />
     <Compile Include="SNT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PythonModuleResolver.cs" />
-    <Compile Include="Static.cs" />
+    <Compile Include="StaticCmdlet.cs" />
+    <Compile Include="StaticPythonCmdlet.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Lib.zip" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Python\code.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Python\olefile.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Python\testrun.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Python\stickyparser.py" />
+    <EmbeddedResource Include="Python\*.py" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PowerShellTest.ps1">
@@ -115,6 +115,10 @@
     <None Include="Example_StickyNotes.snt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Python\ExamplePyCmdlet.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Begin Shifty -->

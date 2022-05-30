@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.IO;
 using System.Management.Automation;
+using System.Linq;
 
 namespace Chimera
 {
@@ -12,6 +13,28 @@ namespace Chimera
     {
         private static List<Assembly> LoadedAssemblies = new List<Assembly>();
 
+        private static bool EventsRegistered = false;
+
+        public event EventHandler<EventArgs> DllResolversAdded;
+        delegate void ResolverDelegate(EventArgs e);
+
+
+
+        public StaticCmdlet()
+        {
+            if (!EventsRegistered)
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
+                AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                
+                if(DllResolversAdded != null)
+                {
+                    DllResolversAdded.Invoke(this, null);
+                }
+                EventsRegistered = true;
+            }
+        }
 
         protected static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
         {
