@@ -26,7 +26,7 @@
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
     <StartProgram>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe</StartProgram>
-    <StartArguments>-NoExit .\PowerShellTest.ps1</StartArguments>
+    <StartArguments>-NoExit .\Examples\PowerShellTest.ps1</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
     <StartProgram>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe</StartProgram>
-    <StartArguments>-NoExit .\PowerShellTest.ps1</StartArguments>
+    <StartArguments>-NoExit .\Examples\PowerShellTest.ps1</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -93,50 +93,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InvokeInternalPython.cs" />
-    <Compile Include="ExampleCmdlet.cs" />
-    <Compile Include="SNT.cs" />
+    <Compile Include="Cmdlets\InvokePython.cs" />
+    <Compile Include="Cmdlets\InvokeInternalPython.cs" />
+    <Compile Include="Examples\ExampleCmdlet.cs" />
+    <Compile Include="Cmdlets\SNT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PythonModuleResolver.cs" />
-    <Compile Include="StaticCmdlet.cs" />
-    <Compile Include="StaticPythonCmdlet.cs" />
+    <Compile Include="DynamicResourceManagement\PythonModuleResolver.cs" />
+    <Compile Include="DynamicResourceManagement\StaticCmdlet.cs" />
+    <Compile Include="DynamicResourceManagement\StaticPythonCmdlet.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Lib.zip" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Python\*.py" />
+    <Content Include="Python\NewCode.py" />
+    <Content Include="Python\test.py" />
+    <Content Include="Python\code.py" />
+    <Content Include="Examples\ExamplePyCmdlet.py" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="PowerShellTest.ps1">
+    <None Include="Examples\PowerShellTest.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Example_StickyNotes.snt">
+    <None Include="Examples\StickyNotes.snt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="README.md" />
+    <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Python\ExamplePyCmdlet.py" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Begin Shifty -->
-  <Target Name="EmbedReferencedAssemblies" AfterTargets="ResolveAssemblyReferences" Condition=" '$(StaticBuild)' == 'true' ">
-    <ItemGroup>
-      <!-- get list of assemblies marked as CopyToLocal -->
-      <FilesToEmbed Include="@(ReferenceCopyLocalPaths)" Condition="('%(ReferenceCopyLocalPaths.Extension)' == '.dll' Or '%(ReferenceCopyLocalPaths.Extension)' == '.pdb')" />
-      <FilesToExclude Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.Extension)' == '.xml'" />
-      <!-- add these assemblies to the list of embedded resources -->
-      <EmbeddedResource Include="@(FilesToEmbed)">
-        <LogicalName>%(FilesToEmbed.DestinationSubDirectory)%(FilesToEmbed.Filename)%(FilesToEmbed.Extension)</LogicalName>
-      </EmbeddedResource>
-      <!-- no need to copy the assemblies locally anymore -->
-      <ReferenceCopyLocalPaths Remove="@(FilesToEmbed)" />
-      <ReferenceCopyLocalPaths Remove="@(FilesToExclude)" />
-    </ItemGroup>
-    <Message Importance="high" Text="[Shifty] Static Build Enabled. Embedding Resources." />
-    <Message Importance="high" Text="Embedding: @(FilesToEmbed->'%(Filename)%(Extension)', ', ')" />
-  </Target>
+  <Import Project="$(ProjectDir)EmbedPython.targets" />
+  <Import Project="$(ProjectDir)StaticBuild.targets" />
   <!-- End Shifty -->
 </Project>

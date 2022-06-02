@@ -26,12 +26,8 @@ There are 3 parts to Chimera's resource embedding. First are the embedded refere
 
 
 ### Embedded Python Scripts 🐍
-The following line in chimera.csproj will embed python scripts:
-```xml
-	<ItemGroup>
-	<EmbeddedResource Include="Python\*.py" />
-	</ItemGroup>
-```
+``Chimera.csproj`` references the ``EmbedPython.targets`` file. EmbedPython.targets handles embedding of python scripts. will embed python scripts:
+Currently, EmbedPython.targets only references 
 
 The scripts can then be used from within the class library by subclassing ``StaticPythonCmdlet``. 
 The following functions and variables will be made available within your class.

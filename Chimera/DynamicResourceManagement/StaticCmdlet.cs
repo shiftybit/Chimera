@@ -66,7 +66,8 @@ namespace Chimera
         private static byte[] TryGetBytes(Assembly executingAssembly, string name)
         {
             AssemblyName assemblyName = new AssemblyName(name);
-            string path1 = "WPF_GUI.Assemblies." + assemblyName.Name + ".dll";
+            string executingName = executingAssembly.GetName().Name;
+            string path1 = executingName + "." + assemblyName.Name + ".dll";
             string path2 = assemblyName.Name + ".dll";
             byte[] assemblyRawBytes;
             using (Stream stream = executingAssembly.GetManifestResourceStream(path1))
