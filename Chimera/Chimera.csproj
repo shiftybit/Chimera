@@ -113,6 +113,7 @@
     <Content Include="Examples\ExamplePyCmdlet.py" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cmdlets\ManagePythonLibraryPaths.cs" />
     <None Include="Examples\PowerShellTest.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

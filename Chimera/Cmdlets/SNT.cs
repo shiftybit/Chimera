@@ -19,8 +19,6 @@ namespace Chimera
         }
         private string _filePath;
 
-        static bool EventsRegistered = false;
-
         public SNT()
         {
             if (!EventsRegistered)

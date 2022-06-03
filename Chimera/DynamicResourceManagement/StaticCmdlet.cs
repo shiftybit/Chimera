@@ -13,7 +13,7 @@ namespace Chimera
     {
         private static List<Assembly> LoadedAssemblies = new List<Assembly>();
 
-        private static bool EventsRegistered = false;
+        protected static bool EventsRegistered = false;
 
         public event EventHandler<EventArgs> DllResolversAdded;
         delegate void ResolverDelegate(EventArgs e);
@@ -67,6 +67,7 @@ namespace Chimera
         {
             AssemblyName assemblyName = new AssemblyName(name);
             string executingName = executingAssembly.GetName().Name;
+            executingName = "Chimera";
             string path1 = executingName + "." + assemblyName.Name + ".dll";
             string path2 = assemblyName.Name + ".dll";
             byte[] assemblyRawBytes;

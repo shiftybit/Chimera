@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IronPython.Runtime;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 using System.IO;
@@ -15,9 +12,21 @@ namespace Chimera
     {
         protected static ScriptEngine eng;
         protected static ScriptScope scope;
-        public StaticPythonCmdlet()
+        protected static bool PythonModulesLoaded = false;
+        public StaticPythonCmdlet() : base()
         {
-            LoadPythonModules();
+            if (!EventsRegistered)
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
+                AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                EventsRegistered = true;
+            }
+            if (!PythonModulesLoaded)
+            {
+                LoadPythonModules();
+                PythonModulesLoaded = true;
+            }
         }
 
         public string GetEmbeddedPythonScript(string fileName)
@@ -48,7 +57,7 @@ namespace Chimera
             }
         }
 
-        public void LoadPythonModules()
+        private void LoadPythonModules()
         {
             string tempFile = Path.GetTempFileName();
             string tempFolder = Path.GetTempPath();

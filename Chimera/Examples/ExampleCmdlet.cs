@@ -1,4 +1,6 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
+
 namespace Chimera
 {
     [Cmdlet(VerbsLifecycle.Invoke, "ExamplePyCmdlet")]
@@ -13,8 +15,15 @@ namespace Chimera
         // Create the Time of Day parameter
         [Parameter(Mandatory = true)]
         public int TimeOfDay { get; set; }
-        public ExampleCmdlet() // Constructor MUST be public, otherwise the cmdlet will not be exported
+        public ExampleCmdlet(): base() // Constructor MUST be public, otherwise the cmdlet will not be exported
         {
+            if (!EventsRegistered)
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
+                AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                EventsRegistered = true;
+            }
             string fileName = "ExamplePyCmdlet.py"; // Currently Case Sensitive. 
             code = GetEmbeddedPythonScript(fileName);
             eng.Execute(code, scope); // Should immediately print "hello world from ExamplePyCmdlet"

@@ -16,6 +16,13 @@ namespace Chimera
         public InvokePython()
         {
             //ResolverDelegate d = new ResolverDelegate(Handle_DLLResolverRegistered); 
+            if (!EventsRegistered)
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
+                AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                EventsRegistered = true;
+            }
             DllResolversAdded += Handle_DLLResolverRegistered;
         }
         public void Handle_DLLResolverRegistered(object s,EventArgs eventArgs)
