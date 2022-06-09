@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cmdlets\GetClassicShellMRU.cs" />
     <Compile Include="Cmdlets\InvokePython.cs" />
     <Compile Include="Cmdlets\InvokeInternalPython.cs" />
     <Compile Include="Examples\ExampleCmdlet.cs" />
@@ -107,6 +108,7 @@
     <EmbeddedResource Include="Lib.zip" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Python\GetClassicShellMRU.py" />
     <Content Include="Python\NewCode.py" />
     <Content Include="Python\test.py" />
     <Content Include="Python\code.py" />
